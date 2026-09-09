@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة متابعة مشروع DDS | DDS Project Delivery Dashboard</title>
+
+  <!-- Google Fonts: Cairo & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CSS v4 Browser CDN -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js & Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --font-cairo: 'Cairo', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+    }
+  </style>
+
+  <style>
+    /* Neutral Charcoal/Slate Color Palette - Neither Blinding White Nor Pitch Black */
+    :root {
+      --bg-primary: #181f2a;
+      /* Sophisticated Neutral Slate-850 */
+      --card-surface: #222b3a;
+      /* Neutral Slate Surface */
+      --card-surface-hover: #293447;
+      --card-subsurface: #1c2432;
+      /* Slightly deeper neutral for inputs/subcards */
+      --card-border: #323e52;
+      /* Elegant soft border */
+      --card-border-subtle: #293344;
+      --text-main: #f8fafc;
+      /* High-contrast readable off-white */
+      --text-muted: #94a3b8;
+      /* Slate 400 for secondary text */
+      --text-dim: #64748b;
+      /* Slate 500 for captions */
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+    }
+
+    .ar-font {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .theme-card {
+      background-color: var(--card-surface);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.22);
+    }
+
+    .theme-subcard {
+      background-color: var(--card-subsurface);
+      border: 1px solid var(--card-border-subtle);
+    }
+
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+
+<body
+  class="min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden antialiased selection:bg-indigo-600 selection:text-white flex flex-col">
+
+  <!-- Single Viewport Container: Strictly fits 100vh on Desktop -->
+  <div class="w-full max-w-[1780px] mx-auto p-2.5 sm:p-3 lg:p-3.5 flex flex-col flex-1 h-full min-h-0 gap-2.5">
+
+    <!-- Top Header Bar -->
+    <header class="theme-card rounded-xl px-4 py-2.5 flex items-center justify-between gap-3 shrink-0">
+
+      <!-- Brand & Project Title -->
+      <div class="flex items-center gap-3">
+        <div
+          class="flex items-center justify-center px-2.5 h-9 rounded-lg bg-indigo-600 text-white font-black tracking-wider text-xs shadow-sm shadow-indigo-600/30 font-mono">
+          DDS
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-black text-slate-100 ar-font tracking-tight flex items-center gap-2">
+              <span>لوحة متابعة مشروع</span>
+              <span class="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-mono font-black text-sm border border-indigo-500/30">DDS</span>
+            </h1>
+            <span
+              class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold rounded-md bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 whitespace-nowrap">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              نظام نشط
+            </span>
+          </div>
+          <div class="text-[11px] text-slate-400 flex items-center gap-2 flex-wrap">
+            <span>DDS System Performance & Delivery Tracking</span>
+            <span class="text-slate-600">•</span>
+            <div class="inline-flex items-center gap-1.5 bg-[#1c2432] px-2 py-0.5 rounded-md border border-[#2e384c]">
+              <div class="flex -space-x-1.5 rtl:space-x-reverse">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-indigo-600 text-[9px] font-bold text-white ring-1 ring-[#1c2432]" title="Ameer Ahmed">AA</span>
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-cyan-600 text-[9px] font-bold text-white ring-1 ring-[#1c2432]" title="Osamah Qasim">OQ</span>
+              </div>
+              <span class="text-slate-200 font-bold text-[11px] flex items-center gap-1">
+                <span>فريق العمل:</span>
+                <span class="text-indigo-300">Ameer Ahmed</span>
+                <span class="text-slate-500">•</span>
+                <span class="text-cyan-300">Osamah Qasim</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Controls & Real Live Clock -->
+      <div class="flex items-center gap-2">
+        <!-- Live Real Today Clock & Date -->
+        <div
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg theme-subcard text-xs text-slate-200 whitespace-nowrap">
+          <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span id="dynamic-today-text" class="font-mono font-bold text-white">2026/09/09</span>
+          <span class="w-1 h-1 rounded-full bg-slate-500"></span>
+          <span id="dynamic-clock-text" class="font-mono text-indigo-300 font-semibold">11:00:00 AM</span>
+        </div>
+
+        <!-- Add Project Button -->
+        <button onclick="openAddModal()"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition-all shadow-sm whitespace-nowrap cursor-pointer">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+          <span>إضافة مشروع</span>
+        </button>
+
+
+
+    </header>
+
+    <!-- 4 KPI Metrics Ribbon (Crisp, High Contrast, Neutral) -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 shrink-0">
+
+      <!-- Card 1: Overall Progress -->
+      <div class="theme-card rounded-xl p-3 flex flex-col justify-between hover:border-indigo-500/50 transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-slate-400">إنجاز مشروع DDS الكلي</span>
+          <span class="p-1 rounded-md bg-indigo-500/15 text-indigo-400">
+            <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between">
+          <span id="metric-overall"
+            class="text-2xl sm:text-3xl font-black text-white tracking-tight font-mono">53.5%</span>
+          <span id="completed-badge-top"
+            class="text-[11px] font-bold text-emerald-300 bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded">1
+            مكتملة 100%</span>
+        </div>
+        <div class="w-full bg-slate-900/60 rounded-full h-1.5 overflow-hidden">
+          <div id="metric-bar" class="bg-indigo-500 h-full rounded-full transition-all duration-700" style="width: 53.5%">
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Today (Live Dynamic Date) -->
+      <div class="theme-card rounded-xl p-3 flex flex-col justify-between hover:border-slate-500 transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-slate-400">تاريخ اليوم الحصري</span>
+          <span class="p-1 rounded-md bg-slate-800 text-slate-300">
+            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between">
+          <span id="card-today-date"
+            class="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">2026/09/09</span>
+          <span class="text-[11px] font-semibold text-slate-300 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            توقيت حي
+          </span>
+        </div>
+        <div class="text-[11px] text-slate-400 flex items-center justify-between">
+          <span id="card-today-ar" class="truncate text-slate-300">اليوم الحالي</span>
+          <span class="text-emerald-400 font-semibold">حالة النظام: نشط</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Deadline -->
+      <div class="theme-card rounded-xl p-3 flex flex-col justify-between hover:border-amber-500/50 transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-slate-400">الموعد النهائي (Deadline)</span>
+          <span class="p-1 rounded-md bg-amber-500/15 text-amber-400">
+            <i data-lucide="hourglass" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between">
+          <span class="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">2026/10/15</span>
+          <span id="deadline-badge"
+            class="text-[11px] font-bold text-amber-300 bg-amber-950/70 border border-amber-500/30 px-2 py-0.5 rounded">متبقي
+            36 يوم</span>
+        </div>
+        <div class="text-[11px] text-slate-400 flex items-center justify-between">
+          <span>إغلاق مهام الكود والفحص</span>
+          <span class="text-slate-300 font-mono">Q3 Sprint</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Production Launch -->
+      <div class="theme-card rounded-xl p-3 flex flex-col justify-between hover:border-emerald-500/50 transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-slate-400">الإطلاق الحي (Production)</span>
+          <span class="p-1 rounded-md bg-emerald-500/15 text-emerald-400">
+            <i data-lucide="rocket" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+        <div class="my-1 flex items-baseline justify-between">
+          <span class="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">2026/11/15</span>
+          <span id="prod-badge"
+            class="text-[11px] font-bold text-emerald-300 bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded">متبقي
+            67 يوم</span>
+        </div>
+        <div class="text-[11px] text-slate-400 flex items-center justify-between">
+          <span>التدشين النهائي للمنصة</span>
+          <span class="text-slate-300 font-mono">V1.0 Launch</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Grid: Right Side (Projects Table & Tech Chart) | Left Side (Donut & Roadmap) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-2.5 flex-1 min-h-0">
+
+      <!-- Right Column (8 Cols): Table & Tech Layers Chart -->
+      <div class="lg:col-span-8 flex flex-col gap-2.5 min-h-0">
+
+        <!-- Table Card -->
+        <div class="theme-card rounded-xl flex-1 flex flex-col min-h-0 overflow-hidden">
+
+          <!-- Table Toolbar -->
+          <div
+            class="px-3.5 py-2 border-b border-[#323e52] flex items-center justify-between gap-2 shrink-0 bg-[#1e2634]">
+            <div class="flex items-center gap-2">
+              <i data-lucide="table" class="w-4 h-4 text-indigo-400"></i>
+              <h2 class="text-xs sm:text-sm font-bold text-white ar-font">موديولات مشروع DDS</h2>
+              <span id="tableCountBadge"
+                class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-700/80 text-slate-200">6
+                موديولات</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <!-- Search Input -->
+              <div class="relative">
+                <input type="text" id="searchInput" onkeyup="filterProjects()" placeholder="بحث بموديولات DDS..."
+                  class="text-xs pl-7 pr-2.5 py-1 rounded-lg theme-subcard text-white placeholder-slate-400 focus:ring-1 focus:ring-indigo-500 outline-none w-36 sm:w-44">
+                <i data-lucide="search" class="w-3 h-3 absolute left-2 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              </div>
+
+              <!-- Status Filter -->
+              <select id="statusFilter" onchange="filterProjects()"
+                class="text-xs py-1 px-2 rounded-lg theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none cursor-pointer">
+                <option value="all">كل الحالات</option>
+                <option value="completed">مكتمل 100%</option>
+                <option value="in_progress">قيد العمل</option>
+                <option value="not_started">لم يبدأ 0%</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Table Body Container -->
+          <div class="flex-1 min-h-0 overflow-y-auto overflow-x-auto">
+            <table class="w-full text-right border-collapse text-xs">
+              <thead
+                class="sticky top-0 z-10 bg-[#1c2330] text-[11px] font-bold text-slate-300 uppercase border-b border-[#323e52]">
+                <tr>
+                  <th class="py-2.5 px-3">الموديول (Module)</th>
+                  <th class="py-2.5 px-3 text-center">الواجهة Frontend</th>
+                  <th class="py-2.5 px-3 text-center text-sky-300">BFF Ameer</th>
+                  <th class="py-2.5 px-3 text-center text-amber-300">Backend Osamah</th>
+                  <th class="py-2.5 px-3 text-center">الأمان Security</th>
+                  <th class="py-2.5 px-3 text-center">الإجمالي Overall</th>
+                  <th class="py-2.5 px-3 text-center">الحالة</th>
+                  <th class="py-2.5 px-3 text-center">إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="projectsTableBody" class="divide-y divide-[#2a3447]">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- Tech Stack Comparison Chart -->
+        <div class="theme-card rounded-xl p-3 shrink-0 h-[175px] sm:h-[185px] flex flex-col">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-400"></i>
+              <h3 class="text-xs font-bold text-white">مقارنة الطبقات التقنية لموديولات DDS</h3>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] text-slate-300 flex-wrap">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-xs bg-indigo-500"></span> الواجهة Frontend</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-xs bg-sky-400"></span> BFF Ameer</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-xs bg-amber-400"></span> Backend Osamah</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-xs bg-emerald-400"></span> الفحص والأمان</span>
+            </div>
+          </div>
+          <div class="flex-1 min-h-0 w-full">
+            <canvas id="stackedBarChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Left Column (4 Cols): Overall Donut & Delivery Timeline -->
+      <div class="lg:col-span-4 flex flex-col gap-2.5 min-h-0">
+
+        <!-- Donut Chart Card -->
+        <div class="theme-card rounded-xl p-3.5 flex flex-col items-center justify-between shrink-0 h-[255px]">
+          <div class="w-full flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <h3 class="text-xs font-bold text-white ar-font">مخطط إنجاز مشروع DDS</h3>
+            </div>
+            <span
+              class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 font-bold border border-rose-500/30">
+              DDS Progress
+            </span>
+          </div>
+
+          <!-- Donut Graphic Container -->
+          <div class="relative w-40 h-40 flex items-center justify-center my-auto">
+            <canvas id="whiteboardPieChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span id="centerChartPercentage"
+                class="text-3xl font-black text-rose-400 tracking-tight font-mono">53.5%</span>
+              <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">إنجاز DDS</span>
+            </div>
+          </div>
+
+          <!-- Breakdown Stats Pills -->
+          <div class="w-full grid grid-cols-3 gap-1.5 text-center">
+            <div class="theme-subcard rounded-lg p-1.5">
+              <div class="text-[10px] text-slate-400">مكتمل</div>
+              <div id="stat-completed-pct" class="text-xs font-bold text-emerald-400 font-mono">33.3%</div>
+            </div>
+            <div class="theme-subcard rounded-lg p-1.5">
+              <div class="text-[10px] text-slate-400">قيد العمل</div>
+              <div id="stat-progress-pct" class="text-xs font-bold text-amber-400 font-mono">50.0%</div>
+            </div>
+            <div class="theme-subcard rounded-lg p-1.5">
+              <div class="text-[10px] text-slate-400">لم يبدأ</div>
+              <div id="stat-notstarted-pct" class="text-xs font-bold text-rose-400 font-mono">16.7%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery Roadmap Timeline Card -->
+        <div class="theme-card rounded-xl p-3.5 flex-1 flex flex-col justify-between min-h-0">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="milestone" class="w-4 h-4 text-indigo-400"></i>
+              <h3 class="text-xs font-bold text-white">خارطة تسليم مشروع DDS</h3>
+            </div>
+            <span class="text-[10px] text-slate-400">محطات الإنجاز</span>
+          </div>
+
+          <!-- Steps Timeline -->
+          <div
+            class="relative pr-5 space-y-2 flex-1 flex flex-col justify-around before:absolute before:right-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#323e52]">
+
+            <!-- Step 1: Real Today -->
+            <div class="relative">
+              <div
+                class="absolute -right-5 top-1 w-4 h-4 rounded-full bg-indigo-500 border-2 border-[#181f2a] shadow-xs">
+              </div>
+              <div class="bg-indigo-950/40 border border-indigo-500/30 rounded-lg p-2 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-indigo-300">اليوم الحالي (Today)</span>
+                  <span id="step-today-date" class="font-mono text-[11px] text-indigo-200 font-bold">2026/09/09</span>
+                </div>
+                <p class="text-[11px] text-slate-300 mt-0.5">متابعة نشطة لموديولات DDS وتحديث تقدم المهام البرمجية والفحص.</p>
+              </div>
+            </div>
+
+            <!-- Step 2: Deadline -->
+            <div class="relative">
+              <div
+                class="absolute -right-5 top-1 w-4 h-4 rounded-full bg-amber-500 border-2 border-[#181f2a] shadow-xs">
+              </div>
+              <div class="bg-amber-950/40 border border-amber-500/30 rounded-lg p-2 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-amber-300">الموعد النهائي (Deadline)</span>
+                  <span class="font-mono text-[11px] text-amber-200 font-bold">2026/10/15</span>
+                </div>
+                <p class="text-[11px] text-slate-300 mt-0.5">إنهاء كافة الواجهات وربط الـ APIs واختبارات الأمان لموديولات DDS.</p>
+              </div>
+            </div>
+
+            <!-- Step 3: Production -->
+            <div class="relative">
+              <div
+                class="absolute -right-5 top-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#181f2a] shadow-xs">
+              </div>
+              <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-lg p-2 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-emerald-300">الإطلاق الحي (Production)</span>
+                  <span class="font-mono text-[11px] text-emerald-200 font-bold">2026/11/15</span>
+                </div>
+                <p class="text-[11px] text-slate-300 mt-0.5">تدشين منصة DDS بالكامل في البيئة الحية بعد اعتماد الـ Staging.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Footer in Roadmap -->
+          <div class="pt-2 border-t border-[#323e52] flex items-center justify-between text-[11px] text-slate-400">
+            <span class="flex items-center gap-1.5 text-slate-300">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-indigo-400"></i>
+              <span>فريق الإشراف: Ameer Ahmed & Osamah Qasim</span>
+            </span>
+            <button onclick="triggerConfetti()"
+              class="text-indigo-300 hover:text-indigo-200 transition-colors font-medium flex items-center gap-1 cursor-pointer">
+              <i data-lucide="party-popper" class="w-3.5 h-3.5"></i>
+              <span>احتفال 🎉</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal: Add or Edit Project -->
+  <div id="projectModal"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-200">
+    <div
+      class="theme-card w-full max-w-md rounded-2xl p-5 shadow-2xl bg-[#222b3a] transform scale-95 transition-transform duration-200"
+      id="modalBox">
+
+      <div class="flex items-center justify-between pb-3 border-b border-[#323e52]">
+        <h3 id="modalTitle" class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="edit" class="w-4 h-4 text-indigo-400"></i>
+          <span>تعديل المشروع</span>
+        </h3>
+        <button onclick="closeModal()"
+          class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/50 cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="projectForm" onsubmit="handleSaveProject(event)" class="space-y-3 mt-3 text-right">
+        <input type="hidden" id="editIndex" value="-1">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">اسم المشروع (Project Name)</label>
+          <input type="text" id="inputName" required
+            class="w-full text-xs px-3 py-2 rounded-xl theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">الواجهة %</label>
+            <input type="number" id="inputFrontend" min="0" max="100" required
+              class="w-full text-xs px-2 py-1.5 rounded-xl theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none font-mono">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-sky-300 mb-1">BFF Ameer %</label>
+            <input type="number" id="inputBff" min="0" max="100" required
+              class="w-full text-xs px-2 py-1.5 rounded-xl theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none font-mono">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-amber-300 mb-1">Backend Osamah %</label>
+            <input type="number" id="inputBackendOsamah" min="0" max="100"
+              class="w-full text-xs px-2 py-1.5 rounded-xl theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none font-mono">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">الأمان %</label>
+            <input type="number" id="inputSecurity" min="0" max="100" required
+              class="w-full text-xs px-2 py-1.5 rounded-xl theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">الإجمالي Overall %</label>
+          <div class="flex items-center gap-2">
+            <input type="number" id="inputOverall" min="0" max="100" required
+              class="w-full text-xs px-3 py-2 rounded-xl theme-subcard text-white focus:ring-1 focus:ring-indigo-500 outline-none font-mono">
+            <button type="button" onclick="calculateAverageOverall()"
+              class="px-3 py-2 text-xs font-semibold theme-subcard text-indigo-300 rounded-xl whitespace-nowrap hover:bg-slate-700/60 transition-colors cursor-pointer">
+              حساب تلقائي
+            </button>
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2 border-t border-[#323e52]">
+          <button type="button" onclick="closeModal()"
+            class="px-3.5 py-1.5 text-xs font-semibold rounded-xl text-slate-400 hover:text-white transition-colors cursor-pointer">
+            إلغاء
+          </button>
+          <button type="submit"
+            class="px-4 py-1.5 text-xs font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-sm cursor-pointer">
+            حفظ البيانات
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    // Ensure clean state: remove any old stored light theme
+    localStorage.removeItem('theme');
+
+    function computeModuleOverall(p) {
+      const isLogin = (p.name || '').trim().toLowerCase() === 'login';
+      const f = Number(p.frontend) || 0;
+      const bff = Number(p.bff) || 0;
+      const s = Number(p.security) || 0;
+      if (isLogin || p.backendOsamah === null || p.backendOsamah === undefined) {
+        return Math.round((f + bff + s) / 3);
+      } else {
+        const bo = Number(p.backendOsamah) || 0;
+        return Math.round((f + bff + bo + s) / 4);
+      }
+    }
+
+    const initialProjectsData = [
+      { name: "Login", frontend: 100, bff: 100, backendOsamah: null, security: 100, overall: 100 },
+      { name: "Information", frontend: 95, bff: 90, backendOsamah: 0, security: 98, overall: 71 },
+      { name: "Archiving", frontend: 100, bff: 100, backendOsamah: 0, security: 100, overall: 75 },
+      { name: "Start", frontend: 90, bff: 75, backendOsamah: 0, security: 40, overall: 51 },
+      { name: "Enrollment", frontend: 85, bff: 0, backendOsamah: 0, security: 10, overall: 24 },
+      { name: "Approval", frontend: 0, bff: 0, backendOsamah: 0, security: 0, overall: 0 }
+    ];
+
+    let stored = localStorage.getItem('board_projects_data');
+    let projectsData;
+    if (stored) {
+      try {
+        let parsed = JSON.parse(stored);
+        projectsData = parsed.map(p => {
+          const isLogin = (p.name || '').trim().toLowerCase() === 'login';
+          const frontend = Number(p.frontend) || 0;
+          const bff = Number(p.bff !== undefined ? p.bff : (p.backend !== undefined ? p.backend : 0));
+          const backendOsamah = isLogin ? null : (p.backendOsamah !== undefined && p.backendOsamah !== null ? Number(p.backendOsamah) : 0);
+          const security = Number(p.security) || 0;
+          const overall = computeModuleOverall({ name: p.name, frontend, bff, backendOsamah, security });
+          return {
+            name: p.name,
+            frontend,
+            bff,
+            backendOsamah,
+            security,
+            overall
+          };
+        });
+      } catch (e) {
+        projectsData = [...initialProjectsData];
+      }
+    } else {
+      projectsData = [...initialProjectsData];
+    }
+    // Save updated data ensuring accurate calculated overalls
+    saveData();
+
+    let donutChartInstance = null;
+    let barChartInstance = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateDynamicDateAndDeadlines();
+      renderTable();
+      initCharts();
+      startLiveClock();
+    });
+
+    // Real dynamic date & countdowns
+    function updateDynamicDateAndDeadlines() {
+      const now = new Date();
+
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const todayFormatted = `${yyyy}/${mm}/${dd}`;
+
+      const arDateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const arDateStr = now.toLocaleDateString('ar-EG', arDateOptions);
+
+      const todayTextEl = document.getElementById('dynamic-today-text');
+      const cardTodayDateEl = document.getElementById('card-today-date');
+      const cardTodayArEl = document.getElementById('card-today-ar');
+      const stepTodayDateEl = document.getElementById('step-today-date');
+
+      if (todayTextEl) todayTextEl.innerText = todayFormatted;
+      if (cardTodayDateEl) cardTodayDateEl.innerText = todayFormatted;
+      if (cardTodayArEl) cardTodayArEl.innerText = arDateStr;
+      if (stepTodayDateEl) stepTodayDateEl.innerText = todayFormatted;
+
+      // Countdown to Deadline: 2026/10/15
+      const deadlineTarget = new Date(2026, 9, 15);
+      const diffMsDeadline = deadlineTarget - now;
+      const daysToDeadline = Math.max(0, Math.ceil(diffMsDeadline / (1000 * 60 * 60 * 24)));
+      const deadlineBadge = document.getElementById('deadline-badge');
+      if (deadlineBadge) deadlineBadge.innerText = `متبقي ${daysToDeadline} يوم`;
+
+      // Countdown to Production: 2026/11/15
+      const prodTarget = new Date(2026, 10, 15);
+      const diffMsProd = prodTarget - now;
+      const daysToProd = Math.max(0, Math.ceil(diffMsProd / (1000 * 60 * 60 * 24)));
+      const prodBadge = document.getElementById('prod-badge');
+      if (prodBadge) prodBadge.innerText = `متبقي ${daysToProd} يوم`;
+    }
+
+    function startLiveClock() {
+      function tick() {
+        const now = new Date();
+        const clockEl = document.getElementById('dynamic-clock-text');
+        if (clockEl) {
+          clockEl.innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // High-Contrast Status Badge generator with elegant neutral backgrounds
+    function getStatusBadge(pct) {
+      if (pct === 100) {
+        return {
+          label: "مكتمل 100%",
+          bg: "bg-emerald-950/70 text-emerald-300 border-emerald-500/40",
+          bar: "bg-emerald-400"
+        };
+      } else if (pct >= 70) {
+        return {
+          label: "متقدم",
+          bg: "bg-indigo-950/70 text-indigo-300 border-indigo-500/40",
+          bar: "bg-indigo-400"
+        };
+      } else if (pct > 0) {
+        return {
+          label: "قيد العمل",
+          bg: "bg-amber-950/70 text-amber-300 border-amber-500/40",
+          bar: "bg-amber-400"
+        };
+      } else {
+        return {
+          label: "لم يبدأ",
+          bg: "bg-rose-950/70 text-rose-300 border-rose-500/40",
+          bar: "bg-rose-400"
+        };
+      }
+    }
+
+    // Render Table Rows
+    function renderTable() {
+      const tbody = document.getElementById('projectsTableBody');
+      const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+      const filterValue = document.getElementById('statusFilter')?.value || 'all';
+
+      tbody.innerHTML = '';
+      let completedCount = 0;
+      let inProgressCount = 0;
+      let notStartedCount = 0;
+
+      projectsData.forEach((item, index) => {
+        if (item.overall === 100) completedCount++;
+        else if (item.overall > 0) inProgressCount++;
+        else notStartedCount++;
+
+        const matchesSearch = item.name.toLowerCase().includes(searchTerm);
+        let matchesStatus = true;
+        if (filterValue === 'completed') matchesStatus = item.overall === 100;
+        else if (filterValue === 'in_progress') matchesStatus = item.overall > 0 && item.overall < 100;
+        else if (filterValue === 'not_started') matchesStatus = item.overall === 0;
+
+        if (!matchesSearch || !matchesStatus) return;
+
+        const badge = getStatusBadge(item.overall);
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[#283244] transition-colors";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold text-white flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full ${item.overall === 100 ? 'bg-emerald-400' : item.overall > 0 ? 'bg-amber-400' : 'bg-rose-400'}"></span>
+            <span>${item.name}</span>
+          </td>
+          
+          <td class="py-2.5 px-3 text-center font-mono">
+            <span class="font-bold ${item.frontend === 100 ? 'text-emerald-300' : item.frontend > 0 ? 'text-slate-100' : 'text-slate-500'}">${item.frontend}%</span>
+          </td>
+
+          <td class="py-2.5 px-3 text-center font-mono">
+            <span class="font-bold ${item.bff === 100 ? 'text-emerald-300' : item.bff > 0 ? 'text-sky-300' : 'text-slate-500'}">${item.bff}%</span>
+          </td>
+
+          <td class="py-2.5 px-3 text-center font-mono">
+            ${item.backendOsamah === null || item.backendOsamah === undefined
+              ? `<span class="text-slate-500 font-bold select-none text-xs" title="غير مشمول في Login">—</span>`
+              : `<span class="font-bold ${item.backendOsamah === 100 ? 'text-emerald-300' : item.backendOsamah > 0 ? 'text-amber-300' : 'text-slate-500'}">${item.backendOsamah}%</span>`
+            }
+          </td>
+
+          <td class="py-2.5 px-3 text-center font-mono">
+            <span class="font-bold ${item.security === 100 ? 'text-emerald-300' : item.security > 0 ? 'text-slate-100' : 'text-slate-500'}">${item.security}%</span>
+          </td>
+
+          <td class="py-2.5 px-3 text-center font-mono">
+            <div class="flex flex-col items-center gap-1 min-w-[60px]">
+              <span class="text-xs font-black ${item.overall === 100 ? 'text-emerald-300' : item.overall >= 70 ? 'text-indigo-300' : item.overall > 0 ? 'text-amber-300' : 'text-rose-300'}">
+                ${item.overall}%
+              </span>
+              <div class="w-12 bg-slate-900/60 rounded-full h-1 overflow-hidden">
+                <div class="${badge.bar} h-full rounded-full" style="width: ${item.overall}%"></div>
+              </div>
+            </div>
+          </td>
+
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <span class="inline-block px-2 py-0.5 text-[10px] font-bold rounded border ${badge.bg}">
+              ${badge.label}
+            </span>
+          </td>
+
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <div class="flex items-center justify-center gap-1">
+              <button onclick="editProject(${index})" class="p-1 rounded text-slate-300 hover:text-white hover:bg-slate-700/60 transition-all cursor-pointer" title="تعديل">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="deleteProject(${index})" class="p-1 rounded text-slate-300 hover:text-rose-300 hover:bg-slate-700/60 transition-all cursor-pointer" title="حذف">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      updateMetrics(completedCount, inProgressCount, notStartedCount);
+      lucide.createIcons();
+    }
+
+    function filterProjects() {
+      renderTable();
+    }
+
+    function updateMetrics(completedCount, inProgressCount, notStartedCount) {
+      const total = projectsData.length;
+      if (total === 0) return;
+
+      const sum = projectsData.reduce((acc, curr) => acc + Number(curr.overall), 0);
+      const exactAvg = sum / total;
+      const overallVal = Number(exactAvg.toFixed(1));
+      const overallFormatted = exactAvg % 1 === 0 ? `${Math.round(exactAvg)}%` : `${exactAvg.toFixed(1)}%`;
+
+      const overallEl = document.getElementById('metric-overall');
+      const barEl = document.getElementById('metric-bar');
+      const centerChartEl = document.getElementById('centerChartPercentage');
+      const topBadge = document.getElementById('completed-badge-top');
+      const tableCountBadge = document.getElementById('tableCountBadge');
+
+      if (overallEl) overallEl.innerText = overallFormatted;
+      if (centerChartEl) centerChartEl.innerText = overallFormatted;
+      if (barEl) barEl.style.width = `${overallVal}%`;
+      if (topBadge) topBadge.innerText = `${completedCount} مكتملة 100%`;
+      if (tableCountBadge) tableCountBadge.innerText = `${total} موديولات`;
+
+      const compPct = ((completedCount / total) * 100).toFixed(1) + '%';
+      const progPct = ((inProgressCount / total) * 100).toFixed(1) + '%';
+      const notPct = ((notStartedCount / total) * 100).toFixed(1) + '%';
+
+      const statComp = document.getElementById('stat-completed-pct');
+      const statProg = document.getElementById('stat-progress-pct');
+      const statNot = document.getElementById('stat-notstarted-pct');
+
+      if (statComp) statComp.innerText = compPct;
+      if (statProg) statProg.innerText = progPct;
+      if (statNot) statNot.innerText = notPct;
+
+      updateCharts(overallVal);
+    }
+
+    function initCharts() {
+      // 1. Donut Chart
+      const ctxDonut = document.getElementById('whiteboardPieChart').getContext('2d');
+      const sum = projectsData.reduce((acc, curr) => acc + Number(curr.overall), 0);
+      const avg = Number((sum / projectsData.length).toFixed(1));
+      const remaining = Number((100 - avg).toFixed(1));
+
+      donutChartInstance = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+          labels: ['المنجز', 'المتبقي'],
+          datasets: [{
+            data: [avg, remaining],
+            backgroundColor: [
+              '#f43f5e',
+              'rgba(148, 163, 184, 0.12)'
+            ],
+            borderColor: ['transparent', 'transparent'],
+            borderWidth: 0,
+            hoverOffset: 2,
+            borderRadius: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '78%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` ${context.label}: ${context.raw}%`
+              }
+            }
+          },
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          }
+        }
+      });
+
+      // 2. Bar Chart with 4 layers: Frontend, BFF Ameer, Backend Osamah, Security
+      const ctxBar = document.getElementById('stackedBarChart').getContext('2d');
+      barChartInstance = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+          labels: projectsData.map(p => p.name),
+          datasets: [
+            {
+              label: 'الواجهة Frontend',
+              data: projectsData.map(p => p.frontend),
+              backgroundColor: '#6366f1',
+              borderRadius: 3,
+              barPercentage: 0.8
+            },
+            {
+              label: 'BFF Ameer',
+              data: projectsData.map(p => p.bff),
+              backgroundColor: '#38bdf8',
+              borderRadius: 3,
+              barPercentage: 0.8
+            },
+            {
+              label: 'Backend Osamah',
+              data: projectsData.map(p => (p.backendOsamah !== null && p.backendOsamah !== undefined ? p.backendOsamah : null)),
+              backgroundColor: '#f59e0b',
+              borderRadius: 3,
+              barPercentage: 0.8
+            },
+            {
+              label: 'الأمان Security',
+              data: projectsData.map(p => p.security),
+              backgroundColor: '#34d399',
+              borderRadius: 3,
+              barPercentage: 0.8
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              grid: {
+                color: 'rgba(148, 163, 184, 0.08)'
+              },
+              ticks: {
+                callback: (val) => val + '%',
+                color: '#94a3b8',
+                font: { size: 10 }
+              }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#f8fafc', font: { size: 10, weight: 'bold' } }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    function updateCharts(val) {
+      if (donutChartInstance) {
+        const remaining = Number((100 - val).toFixed(1));
+        donutChartInstance.data.datasets[0].data = [val, remaining];
+        donutChartInstance.update();
+      }
+
+      if (barChartInstance) {
+        barChartInstance.data.labels = projectsData.map(p => p.name);
+        barChartInstance.data.datasets[0].data = projectsData.map(p => p.frontend);
+        barChartInstance.data.datasets[1].data = projectsData.map(p => p.bff);
+        barChartInstance.data.datasets[2].data = projectsData.map(p => (p.backendOsamah !== null && p.backendOsamah !== undefined ? p.backendOsamah : null));
+        barChartInstance.data.datasets[3].data = projectsData.map(p => p.security);
+        barChartInstance.update();
+      }
+    }
+
+    // Modal Operations
+    function openAddModal() {
+      document.getElementById('editIndex').value = -1;
+      document.getElementById('modalTitle').innerHTML = '<i data-lucide="plus-circle" class="w-4 h-4 text-indigo-400"></i><span>إضافة موديول جديد</span>';
+      document.getElementById('inputName').value = '';
+      document.getElementById('inputFrontend').value = 0;
+      document.getElementById('inputBff').value = 0;
+      const boInput = document.getElementById('inputBackendOsamah');
+      boInput.value = 0;
+      boInput.disabled = false;
+      boInput.placeholder = '';
+      const boContainer = boInput.closest('div');
+      if (boContainer) boContainer.classList.remove('opacity-40', 'pointer-events-none');
+      document.getElementById('inputSecurity').value = 0;
+      document.getElementById('inputOverall').value = 0;
+      showModal();
+    }
+
+    function editProject(index) {
+      const p = projectsData[index];
+      const isLogin = (p.name || '').trim().toLowerCase() === 'login';
+      document.getElementById('editIndex').value = index;
+      document.getElementById('modalTitle').innerHTML = `<i data-lucide="edit" class="w-4 h-4 text-indigo-400"></i><span>تعديل بيانات: ${p.name}</span>`;
+      document.getElementById('inputName').value = p.name;
+      document.getElementById('inputFrontend').value = p.frontend;
+      document.getElementById('inputBff').value = p.bff;
+
+      const boInput = document.getElementById('inputBackendOsamah');
+      const boContainer = boInput.closest('div');
+      if (isLogin || p.backendOsamah === null) {
+        boInput.value = '';
+        boInput.disabled = true;
+        boInput.placeholder = '— (غير مشمول)';
+        if (boContainer) boContainer.classList.add('opacity-40', 'pointer-events-none');
+      } else {
+        boInput.disabled = false;
+        boInput.value = p.backendOsamah !== undefined ? p.backendOsamah : 0;
+        boInput.placeholder = '';
+        if (boContainer) boContainer.classList.remove('opacity-40', 'pointer-events-none');
+      }
+
+      document.getElementById('inputSecurity').value = p.security;
+      document.getElementById('inputOverall').value = p.overall;
+      showModal();
+    }
+
+    function calculateAverageOverall() {
+      const isLogin = document.getElementById('inputName').value.trim().toLowerCase() === 'login';
+      const f = Number(document.getElementById('inputFrontend').value) || 0;
+      const bff = Number(document.getElementById('inputBff').value) || 0;
+      const s = Number(document.getElementById('inputSecurity').value) || 0;
+      if (isLogin) {
+        document.getElementById('inputOverall').value = Math.round((f + bff + s) / 3);
+      } else {
+        const bo = Number(document.getElementById('inputBackendOsamah').value) || 0;
+        document.getElementById('inputOverall').value = Math.round((f + bff + bo + s) / 4);
+      }
+    }
+
+    function showModal() {
+      const modal = document.getElementById('projectModal');
+      const box = document.getElementById('modalBox');
+      modal.classList.remove('pointer-events-none', 'opacity-0');
+      modal.classList.add('opacity-100');
+      box.classList.remove('scale-95');
+      box.classList.add('scale-100');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('projectModal');
+      const box = document.getElementById('modalBox');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      box.classList.remove('scale-100');
+      box.classList.add('scale-95');
+    }
+
+    function handleSaveProject(e) {
+      e.preventDefault();
+      const idx = parseInt(document.getElementById('editIndex').value);
+      const name = document.getElementById('inputName').value.trim();
+      const isLogin = name.toLowerCase() === 'login';
+      const frontend = Math.min(100, Math.max(0, Number(document.getElementById('inputFrontend').value)));
+      const bff = Math.min(100, Math.max(0, Number(document.getElementById('inputBff').value)));
+      const backendOsamah = isLogin ? null : Math.min(100, Math.max(0, Number(document.getElementById('inputBackendOsamah').value)));
+      const security = Math.min(100, Math.max(0, Number(document.getElementById('inputSecurity').value)));
+      const overall = Math.min(100, Math.max(0, Number(document.getElementById('inputOverall').value)));
+
+      const projectObj = { name, frontend, bff, backendOsamah, security, overall };
+
+      if (idx >= 0) {
+        projectsData[idx] = projectObj;
+      } else {
+        projectsData.push(projectObj);
+      }
+
+      saveData();
+      closeModal();
+      renderTable();
+      triggerConfetti();
+    }
+
+    function deleteProject(index) {
+      if (confirm(`هل أنت متأكد من حذف موديول "${projectsData[index].name}"؟`)) {
+        projectsData.splice(index, 1);
+        saveData();
+        renderTable();
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('board_projects_data', JSON.stringify(projectsData));
+    }
+
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectsData, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `projects_data_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+  </script>
+</body>
+
+</html>
